@@ -24,18 +24,22 @@ app.get("/api/:date",  (req, res) => {
   var data = req.params.date;
   var convertToDate = new Date(data);
   var unix;
-  console.log(convertToDate);
-  if(convertToDate !='Invalid Date')
+  unix = Math.floor(convertToDate.getTime());
+  if(/\d{5,}/.test(data))
   {
-    unix = Math.floor(convertToDate.getTime());
-  }
-  else{
     var convertToInt = parseInt(data);
     unix= convertToInt;
     convertToDate= new Date(convertToInt)
   }
-  // Expected output: "Sunday, 20 December 2020 at 14:23:16 GMT"
-  res.json({unix:unix , "utc": convertToDate.toUTCString()})
+  if(convertToDate !='Invalid Date')
+  {
+      // Expected output: "Sunday, 20 December 2020 at 14:23:16 GMT"
+    res.json({unix:unix , "utc": convertToDate.toUTCString()})
+
+  }
+  else{
+    res.json({error : "Invalid Date" });
+  }
  });
 
 

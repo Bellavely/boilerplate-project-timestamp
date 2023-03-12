@@ -20,15 +20,30 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello",  (req, res) => {
-  res.send(Date());
-});
+app.get("/api/:date",  (req, res) => {
+  var data = req.params.date;
+  var convertToDate = new Date(data);
+  var unix;
+  console.log(convertToDate);
+  if(convertToDate !='Invalid Date')
+  {
+    unix = Math.floor(convertToDate.getTime());
+  }
+  else{
+    var convertToInt = parseInt(data);
+    unix= convertToInt;
+    convertToDate= new Date(convertToInt)
+  }
+  // Expected output: "Sunday, 20 December 2020 at 14:23:16 GMT"
+  res.json({unix:unix , "utc": convertToDate.toUTCString()})
+ });
 
 
 
 
 
+var port= process.env.PORT || 7000;
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
